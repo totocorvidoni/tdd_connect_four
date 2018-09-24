@@ -1,7 +1,12 @@
 class GameBoard
-  attr_reader :board
+  attr_reader :cells
+
+  def initialize
+    set_up
+  end
+
   def set_up
-    @board = []
-    6.times { @board << [' ', ' ', ' ', ' ', ' ', ' ', ' '] }
+    @cells = []
+    6.times { @cells << [' ', ' ', ' ', ' ', ' ', ' ', ' '] }
   end
 end

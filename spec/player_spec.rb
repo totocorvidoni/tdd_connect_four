@@ -4,9 +4,10 @@ describe Player do
   subject(:player) { Player.new('Pupe', "\u26aa") }
 
   it { is_expected.to respond_to(:name) }
+  it { is_expected.to respond_to(:mark) }
 
   describe '#name shows player name' do
-    context 'Player name is Pupe' do
+    context 'when Player name is Pupe' do
       it "returns 'Pupe'" do
         expect(player.name).to eq('Pupe')
       end
