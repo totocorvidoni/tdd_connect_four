@@ -17,6 +17,11 @@ class GameBoard
   end
 
   def put_piece(piece, column)
-    @grid[column - 1] << piece
+    begin
+      raise if @grid[column - 1].size >= 5 || @grid[column - 1].nil?
+      @grid[column - 1] << piece
+    rescue
+        puts 'Invalid Move'
+    end
   end
 end

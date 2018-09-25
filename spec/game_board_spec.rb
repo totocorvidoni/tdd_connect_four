@@ -12,27 +12,41 @@ describe GameBoard do
     end
   end
 
+  describe '#show displays the board' do
+    context 'when the board es empty' do
+      it 'prints the empty board' do
+        # \u0020 = SPACE, placed before each line beacuse <<~ erases all white spaces
+        expect { gameboard.show }.to output(<<~GRID).to_stdout
+        \u0020\u26aa \u26aa \u26aa \u26aa \u26aa \u26aa \u26aa
+        \u0020\u26aa \u26aa \u26aa \u26aa \u26aa \u26aa \u26aa
+        \u0020\u26aa \u26aa \u26aa \u26aa \u26aa \u26aa \u26aa
+        \u0020\u26aa \u26aa \u26aa \u26aa \u26aa \u26aa \u26aa
+        \u0020\u26aa \u26aa \u26aa \u26aa \u26aa \u26aa \u26aa
+        \u0020\u26aa \u26aa \u26aa \u26aa \u26aa \u26aa \u26aa
+        GRID
+      end
+    end    
+  end
+
   describe '#put_piece places the corresponding player marker on the choosen column' do
-    context 'when @player_one puts the first piece in the first column' do
+    context 'when a red marker is put in the first column' do
       before { gameboard.put_piece("\e[31m\u26ab\e[0m", 1) }
       it 'falls on the first sub array with a red piece' do
         expect(gameboard.grid[0][0]).to eq("\e[31m\u26ab\e[0m")
       end
     end
-  end
 
-  describe '#show displays the board' do
-    context 'when the board es empty' do
-      xit 'prints the empty board' do
-        expect(gameboard.show).to output(<<-GRID).to_stdout
-           \u26aa \u26aa \u26aa \u26aa \u26aa \u26aa \u26aa
-           \u26aa \u26aa \u26aa \u26aa \u26aa \u26aa \u26aa
-           \u26aa \u26aa \u26aa \u26aa \u26aa \u26aa \u26aa
-           \u26aa \u26aa \u26aa \u26aa \u26aa \u26aa \u26aa
-           \u26aa \u26aa \u26aa \u26aa \u26aa \u26aa \u26aa
-           \u26aa \u26aa \u26aa \u26aa \u26aa \u26aa \u26aa
-        GRID
+    context 'when the column already has 6 pieces' do
+      before { gameboard.grid[6] = ['', '', '', '', '', '', ''] }
+      it "will prevent from adding more" do
+        expect { gameboard.put_piece("\e[31m\u26ab\e[0m", 7) }.to output("Invalid Move\n").to_stdout        
       end
-    end    
+    end
+
+    context 'when the column doesn\'t exist' do
+      it 'will prevent you from adding to it' do
+        expect { gameboard.put_piece("\e[31m\u26ab\e[0m", 10) }.to output("Invalid Move\n").to_stdout
+      end
+    end
   end
 end
