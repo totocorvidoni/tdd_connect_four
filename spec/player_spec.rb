@@ -1,7 +1,7 @@
 require 'player'
 
 describe Player do
-  subject(:player) { Player.new('Pupe', "\u26aa") }
+  subject(:player) { Player.new('Pupe', 'red') }
 
   it { is_expected.to respond_to(:name) }
   it { is_expected.to respond_to(:mark) }
@@ -15,16 +15,16 @@ describe Player do
   end
 
   describe '#mark represents the player piece ' do
-    context 'when mark is an empty circle' do
-      it "returns \u26aa" do
-        expect(player.mark).to eq("\u26aa")
+    context 'when mark is a red circle' do
+      it "returns \e[31m\u26ab\e[0m" do
+        expect(player.mark).to eq("\e[31m\u26ab\e[0m")
       end
     end
 
-    context 'when mark is a circle' do
-      let(:circle) { Player.new('circle', "\u26aa") }
-      it "returns \u26ab" do
-        expect(circle.mark).to eq("\u26aa")
+    context 'when mark is a yellow circle' do
+      let(:player) { Player.new('player', 'yellow') }
+      it "returns \e[33m\u26ab\e[0m" do
+        expect(player.mark).to eq("\e[33m\u26ab\e[0m")
       end
     end
   end

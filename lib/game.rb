@@ -9,8 +9,10 @@ class Game
   end
 
   def new_player(name)
-    @next_mark = @next_mark.nil? ? "\u26ab" : mark = "\u26aa"
-    player = Player.new(name, @next_mark)
-    @player_one.nil? ? @player_one = player : @player_two = player
+    if @player_one.nil?
+      @player_one = Player.new(name, 'red')
+    else
+      @player_two = Player.new(name, 'yellow')
+    end
   end
 end
