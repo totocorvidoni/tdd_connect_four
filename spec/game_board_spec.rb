@@ -38,14 +38,16 @@ describe GameBoard do
 
     context 'when the column already has 6 pieces' do
       before { gameboard.grid[6] = ['', '', '', '', '', '', ''] }
-      it "will prevent from adding more" do
-        expect { gameboard.put_piece("\e[31m\u26ab\e[0m", 7) }.to output("Invalid Move\n").to_stdout        
+      it "will ask for another argument and call the method again" do
+        allow(gameboard).to receive(:gets).and_return(2)
+        expect(gameboard.put_piece("\e[31m\u26ab\e[0m", 7)).to eq(gameboard.grid[1])
       end
     end
 
     context 'when the column doesn\'t exist' do
-      it 'will prevent you from adding to it' do
-        expect { gameboard.put_piece("\e[31m\u26ab\e[0m", 10) }.to output("Invalid Move\n").to_stdout
+      it 'will ask for another argument and call the method again' do
+        allow(gameboard).to receive(:gets).and_return(4)
+        expect(gameboard.put_piece("\e[31m\u26ab\e[0m", 10)).to eq(gameboard.grid[3])
       end
     end
   end

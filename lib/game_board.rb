@@ -18,10 +18,15 @@ class GameBoard
 
   def put_piece(piece, column)
     begin
-      raise if @grid[column - 1].size >= 5 || @grid[column - 1].nil?
+      if @grid[column - 1].nil? || @grid[column - 1].size >= 5
+        raise ArgumentError.new
+      end
       @grid[column - 1] << piece
-    rescue
-        puts 'Invalid Move'
+    rescue ArgumentError
+      puts 'Invalid Move'
+      puts 'Please pick a correct column'
+      col = gets.to_i
+      put_piece(piece, col)
     end
   end
 end
