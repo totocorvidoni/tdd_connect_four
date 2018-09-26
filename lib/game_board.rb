@@ -1,5 +1,5 @@
 class GameBoard
-  attr_reader :grid
+  attr_accessor :grid
 
   def initialize
     @grid = Array.new(7) { [] }
@@ -25,8 +25,8 @@ class GameBoard
     rescue ArgumentError
       puts 'Invalid Move'
       puts 'Please pick a correct column'
-      col = gets.to_i
-      put_piece(piece, col)
+      amend = gets.to_i
+      put_piece(piece, amend)
     end
   end
 end
