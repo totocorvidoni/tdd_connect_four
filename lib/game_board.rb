@@ -14,19 +14,10 @@ class GameBoard
       puts
       row -= 1
     end
+    puts " \e[32m\u24f5\e[0m \e[32m\u24f6\e[0m \e[32m\u24f7\e[0m \e[32m\u24f8\e[0m \e[32m\u24f9\e[0m \e[32m\u24fa\e[0m \e[32m\u24fb\e[0m"
   end
 
-  def put_piece(piece, column)
-    begin
-      if @grid[column - 1].nil? || @grid[column - 1].size >= 5
-        raise ArgumentError.new
-      end
-      @grid[column - 1] << piece
-    rescue ArgumentError
-      puts 'Invalid Move'
-      puts 'Please pick a correct column'
-      amend = gets.to_i
-      put_piece(piece, amend)
-    end
+  def put_piece(piece, x_axis)
+      @grid[x_axis] << piece
   end
 end

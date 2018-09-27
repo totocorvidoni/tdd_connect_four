@@ -32,6 +32,36 @@ describe Game do
     end
   end
 
+  describe '#move puts the current player marker on the chosen column' do
+    context 'when a red marker is put in the first column' do
+      before { game.move(1) }
+
+      it 'falls on the first subarray with a red piece' do
+        expect(game.board.grid[0][0]).to eq("\e[31m\u26ab\e[0m")
+      end
+    end
+
+    context 'when the column already has 6 pieces' do
+      before do
+        3.times { game.move(2) }
+        game.switch_player
+        3.times { game.move(2) }
+      end
+
+      it "will ask for another argument and call the method again" do
+        allow(game).to receive(:gets).and_return(1)
+        expect(game.move(2)).to eq(0)
+      end
+    end
+
+    context 'when the column doesn\'t exist' do
+      it 'will ask for another argument and call the method again' do
+        allow(game).to receive(:gets).and_return(7)
+        expect(game.move(10)).to eq(6)
+      end
+    end
+  end
+
   describe '#column_win? checks for 4 connected pieces vertically' do
     context 'when the last 4 pieces are the same' do
       before { 4.times { game.move(3) } }
@@ -132,7 +162,7 @@ describe Game do
         before { 4.times { game.move(1) } }
 
         it 'assigns victory to @player_one' do
-          expect(game.end_check).to eq(game.player_one)
+          expect { game.end_check }.to output("Pupe connected four! Pupe WINS THE GAME\n").to_stdout
         end          
       end
 
@@ -145,7 +175,7 @@ describe Game do
         end
 
         it 'assigns victory to @player_one' do
-          expect(game.end_check).to eq(game.player_one)
+          expect { game.end_check }.to output("Pupe connected four! Pupe WINS THE GAME\n").to_stdout
         end
       end
 
@@ -162,7 +192,7 @@ describe Game do
         end
 
         it 'assigns victory to @player_two' do
-          expect(game.end_check).to eq(game.player_two)
+          expect { game.end_check }.to output("Toto connected four! Toto WINS THE GAME\n").to_stdout
         end
       end
     end
@@ -173,14 +203,28 @@ describe Game do
       end
 
       it "returns 'tie'" do
-        expect(game.end_check).to eq('tie')
+        expect { game.end_check }.to output("The board is full, it's a TIE\n").to_stdout
       end
     end
 
     context 'when no game ending condition has been met' do
       before { game.move(1) }
       it 'returns nil' do
-        expect(game.end_check).to eq(nil)
+        expect(game.end_check).to be_nil
+      end
+    end
+  end
+
+  describe '#end_game informs of the game ending condition' do
+    context 'when game is a tie' do
+      it 'informs of it and exits the program' do
+        expect { game.end_game('tie') }.to output("The board is full, it's a TIE\n").to_stdout
+      end
+    end
+
+    context 'when current Player wins' do
+      it 'informs congratulates the player and exits the program' do
+        expect { game.end_game(game.playing.name) }.to output("Pupe connected four! Pupe WINS THE GAME\n").to_stdout
       end
     end
   end
